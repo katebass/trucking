@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int $order_id
  * @property int $driver_id
- * @property string $distance
+ * @property double $distance
  *
  * @property Drivers $driver
  * @property Orders $order

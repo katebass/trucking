@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\web\JqueryAsset;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */

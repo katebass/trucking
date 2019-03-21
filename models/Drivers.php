@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property int $experience
- * @property string $rate
+ * @property double $rate
  * @property string $phonenumber
  *
  * @property DriversOrders[] $driversOrders

@@ -31,7 +31,8 @@ class Routes extends \yii\db\ActiveRecord
     {
         return [
             [['route_name', 'distance', 'time_estimate'], 'required', 'message' => 'Это поле обязательно для заполнения'],
-            [['distance', 'time_estimate'], 'number'],
+            [['distance'], 'number'],
+            [['time_estimate'], 'safe'],
             [['route_name'], 'string', 'max' => 191],
             [['route_name'], 'unique'],
         ];
@@ -46,7 +47,7 @@ class Routes extends \yii\db\ActiveRecord
             'id' => 'ID',
             'route_name' => 'Название маршрута',
             'distance' => 'Дистанция (км)',
-            'time_estimate' => 'Время в дороге (ч.)',
+            'time_estimate' => 'Время в дороге (ч:м:с)',
         ];
     }
 

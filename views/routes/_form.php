@@ -16,7 +16,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'distance')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'time_estimate')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'time_estimate')
+    		 ->widget(\janisto\timepicker\TimePicker::className(), [
+	 			'mode' => 'time'
+    		]) 
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
