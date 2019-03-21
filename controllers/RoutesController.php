@@ -124,4 +124,9 @@ class RoutesController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionGetRouteDistance() {
+        $route_id = Yii::$app->request->post('route_id');
+        return Routes::find()->where(['id' => $route_id])->one()->distance;
+    }
 }

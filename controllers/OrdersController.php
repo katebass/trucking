@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Orders;
+use app\models\DriversOrders;
 use app\models\OrdersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -90,8 +91,13 @@ class OrdersController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $driversInOrder = DriversOrders::find()->where(['order_id' => $model->id])->all();
+        // echo "<pre>";
+        // print_r($driversInOrder);
+        // die;
         return $this->render('update', [
             'model' => $model,
+            'driversInOrder' => $driversInOrder
         ]);
     }
 
