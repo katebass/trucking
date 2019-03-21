@@ -18,7 +18,7 @@ class m190318_232757_create_drivers_orders_table extends Migration
             'id' => $this->primaryKey(),
             'order_id' => $this->integer()->notNull(),
             'driver_id' => $this->integer()->notNull(),
-            'distance' => $this->decimal(5, 2)->unsigned()->notNull(),
+            'distance' => $this->double(5, 2)->unsigned()->notNull(),
 
         ]);
 

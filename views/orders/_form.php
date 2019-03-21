@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\web\JqueryAsset;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -32,11 +33,14 @@ $this->registerJsFile(
         ?>
     </div>
 
-    <?= $form->field($model, 'start_date')->textInput() ?>
+    <?= $form->field($model, 'start_date')->widget(\yii\jui\DatePicker::class, 
+        ['dateFormat' => 'yyyy-MM-dd',]) ?>
 
-    <?= $form->field($model, 'end_date')->textInput() ?>
+    <?= $form->field($model, 'end_date')->widget(\yii\jui\DatePicker::class,
+        ['dateFormat' => 'yyyy-MM-dd',]) ?>
 
     <?php foreach ($driversInOrder as $key => $driver) { ?>
+
         <?= $form->field($driver, 'driver_id')
              ->textInput()
              ->label('Водитель ' . ($key + 1))
@@ -45,8 +49,7 @@ $this->registerJsFile(
                             ['prompt'=>'пожалуйста, выберите водителя']) 
         ?>
 
-
-    <?= $form->field($driver, 'distance')->textInput() ?>
+        <?= $form->field($driver, 'distance')->textInput() ?>
 
     <?php } ?>
 

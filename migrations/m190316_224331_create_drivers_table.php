@@ -18,7 +18,7 @@ class m190316_224331_create_drivers_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(40)->notNull()->unique(),
             'experience' => $this->integer()->unsigned(),
-            'rate' => $this->decimal(5, 2)->unsigned()->notNull(),
+            'rate' => $this->double(6, 2)->unsigned()->notNull(),
             'phonenumber' => $this->string(12)
         ]);
     }

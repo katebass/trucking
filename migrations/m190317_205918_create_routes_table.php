@@ -17,8 +17,8 @@ class m190317_205918_create_routes_table extends Migration
         $this->createTable('routes', [
             'id' => $this->primaryKey(),
             'route_name' => $this->string(191)->notNull()->unique(),
-            'distance' => $this->decimal(5, 2)->notNull(),
-            'time_estimate' => $this->decimal(5, 2)->notNull(),
+            'distance' => $this->double(5, 2)->notNull(),
+            'time_estimate' => $this->time()->notNull(),
         ]);
     }
 

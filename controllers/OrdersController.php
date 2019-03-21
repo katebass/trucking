@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Orders;
+use app\models\Drivers;
 use app\models\DriversOrders;
+use app\models\Salaries;
 use app\models\OrdersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -71,8 +73,12 @@ class OrdersController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $driversInOrder = new DriversOrders();
+        $drivers[] = $driversInOrder;
+
         return $this->render('create', [
             'model' => $model,
+            'driversInOrder' => $drivers
         ]);
     }
 
@@ -85,16 +91,37 @@ class OrdersController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id);        
+        $driversInOrder = DriversOrders::find()->where(['order_id' => $model->id])->all();
+        
+        $postData = Yii::$app->request->post();
+        if ($postData) {
+            
+            $model->load($postData);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            foreach($driversInOrder as $driver) {
+                $driver->load($postData);
+                $driver->order_id = $model->id;
+                $driver->save();
+
+                $driverData = Drivers::findOne($driver->driver_id);
+                
+                $salary = Salaries::find()->where(['drivers_orders_id' => $driver->id])->one();
+                $salary = isset($salary) ? $salary : new Salaries();
+                $salary->drivers_orders_id = $driver->id;
+
+                $rateFactor = 1 + $driverData->experience / 10;
+                $salary->salary =  $rateFactor * $driverData->rate * $driver->distance;
+
+                $salary->save();
+                
+            }
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
-        $driversInOrder = DriversOrders::find()->where(['order_id' => $model->id])->all();
-        // echo "<pre>";
-        // print_r($driversInOrder);
-        // die;
         return $this->render('update', [
             'model' => $model,
             'driversInOrder' => $driversInOrder

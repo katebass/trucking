@@ -16,7 +16,7 @@ class m190318_232807_create_salaries_table extends Migration
         $this->createTable('salaries', [
             'id' => $this->primaryKey(),
             'drivers_orders_id' => $this->integer()->notNull(),
-            'salary' => $this->decimal(5, 2)->unsigned()
+            'salary' => $this->double(5, 2)->unsigned()
         ]);
 
         $this->addForeignKey(

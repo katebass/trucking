@@ -8,8 +8,8 @@ $('#orders-route_id').on('change', function(e){
 			'route_id': route
 		},
 		success: function (res) {
+			res = res ? res : 0;
 			$('#route-distance-placeholder').text(res + ' км.');
-			// console.log(res);
 		}
 	});
   
