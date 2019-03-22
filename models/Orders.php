@@ -35,8 +35,21 @@ class Orders extends \yii\db\ActiveRecord
             [['route_id'], 'integer'],
             [['start_date', 'end_date'], 'safe'],
             [['route_id'], 'exist', 'skipOnError' => true, 'targetClass' => Routes::className(), 'targetAttribute' => ['route_id' => 'id']],
-        ];
+            // ['start_date', 'validateDates'],
+            ['start_date', 'date', 'timestampAttribute' => 'start_date'],
+            ['end_date', 'date','timestampAttribute' => 'end_date'],
+            ['end_date', 'compare', 'compareAttribute'=> 'start_date', 'operator' => '>=', 
+                'message' => 'Пожалуйста, укажите корректные даты (конечная дата меньше или равна начальной'],
+
+        ];  
     }
+
+    // public function validateDates(){
+    //     if(strtotime($this->end_date) < strtotime($this->start_date)){
+    //         $this->addError('start_date','Пожалуйста, укажите корректные даты (конечная дата меньше или равна начальной)');
+    //         $this->addError('end_date','Пожалуйста, укажите корректные даты (конечная дата меньше или равна начальной)');
+    //     }
+    // }
 
     /**
      * {@inheritdoc}

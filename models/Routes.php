@@ -31,10 +31,10 @@ class Routes extends \yii\db\ActiveRecord
     {
         return [
             [['route_name', 'distance', 'time_estimate'], 'required', 'message' => 'Это поле обязательно для заполнения'],
-            [['distance'], 'number'],
+            [['distance'], 'number', 'min' => 50, 'max' => 3000],
             [['time_estimate'], 'safe'],
-            [['route_name'], 'string', 'max' => 191],
-            [['route_name'], 'unique'],
+            [['route_name'], 'string', 'min' => 5, 'max' => 191],
+            [['route_name'], 'unique', required],
         ];
     }
 
