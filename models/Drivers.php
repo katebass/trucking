@@ -39,8 +39,8 @@ class Drivers extends \yii\db\ActiveRecord
             [['phonenumber'], 'match', 'not' => true, 'pattern' => '/[^0-9]/',
                     'message' => 'Номер телефона должен содержать только цифры'],
             [['name'], 'unique'],
-            [['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Zа-яА-Я\s]/', 
-                        'message' => 'Имя не должно содержать символы или цифры']
+            // [['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Zа-яА-Я\s]/', 
+            //             'message' => 'Имя не должно содержать символы или цифры']
         ];
     }
 
