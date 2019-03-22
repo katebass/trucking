@@ -31,7 +31,7 @@ class Drivers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'rate'], 'required', 'message' => 'Это поле обязательно для заполнения'],
+            [['name', 'rate', 'experience'], 'required', 'message' => 'Это поле обязательно для заполнения'],
             [['experience'], 'integer', 'max' => 70, 'min' => '1'],
             [['rate'], 'number', 'max' => 100, 'min' => 20],
             [['name'], 'string', 'max' => 40, 'min' => 2],
