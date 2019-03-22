@@ -32,13 +32,18 @@ class Drivers extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'rate'], 'required', 'message' => 'Это поле обязательно для заполнения'],
-            [['experience'], 'integer'],
-            [['rate'], 'number'],
-            [['name'], 'string', 'max' => 40],
-            [['phonenumber'], 'string', 'max' => 12],
+            [['experience'], 'integer', 'max' => 70, 'min' => '1'],
+            [['rate'], 'number', 'max' => 100, 'min' => 20],
+            [['name'], 'string', 'max' => 40, 'min' => 2],
+            [['phonenumber'], 'string', 'max' => 12, 'min' => 10],
+            [['phonenumber'], 'match', 'not' => true, 'pattern' => '/[^0-9]/',
+                    'message' => 'Номер телефона должен содержать только цифры'],
             [['name'], 'unique'],
+            [['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Zа-яА-Я\s]/', 
+                        'message' => 'Имя не должно содержать символы или цифры']
         ];
     }
+
 
     /**
      * {@inheritdoc}
