@@ -128,6 +128,11 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionReport()
+    {
+        return $this->render('report');
+    }
+
     public function actionSignup(){
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();

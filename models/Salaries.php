@@ -44,7 +44,7 @@ class Salaries extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'drivers_orders_id' => 'Номер заказа и водитель',
-            'salary' => 'Зарплата',
+            'salary' => 'Зарплата (грн.)',
         ];
     }
 

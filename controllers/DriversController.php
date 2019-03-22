@@ -37,7 +37,6 @@ class DriversController extends Controller
     {
         $searchModel = new DriversSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

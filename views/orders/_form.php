@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\web\JqueryAsset;
+use unclead\multipleinput\MultipleInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -38,19 +39,37 @@ $this->registerJsFile(
     <?= $form->field($model, 'end_date')->widget(\yii\jui\DatePicker::class,
         ['dateFormat' => 'yyyy-MM-dd',]) ?>
 
-    <?php foreach ($driversInOrder as $key => $driver) { ?>
 
-        <?= $form->field($driver, 'driver_id')
-             ->textInput()
-             ->label('Водитель ' . ($key + 1))
-             ->dropDownList(
-                ArrayHelper::map(app\models\Drivers::find()->all(), 'id', 'name'), 
-                            ['prompt'=>'пожалуйста, выберите водителя']) 
-        ?>
-
-        <?= $form->field($driver, 'distance')->textInput() ?>
-
-    <?php } ?>
+    <?php
+        echo $form->field($driversInOrder, 'drivers')->widget(MultipleInput::className(), [
+            'max' => 2,
+            //'min'               => 1, // should be at least 2 rows
+            //'allowEmptyList'    => false,
+            //'enableGuessTitle'  => true,
+            //'addButtonPosition' => MultipleInput::POS_HEADER, // show add button in the header
+            'columns' => [
+                [
+                    'name'  => 'driver_id',
+                    'type'  => 'dropDownList',
+                    'title' => 'Водители',
+                    'options' => ['label' => false],
+                    'items' => [
+                        'prompt' => 'пожалуйста, выберите водителя',
+                        ArrayHelper::map(app\models\Drivers::find()->all(), 'id', 'name')
+                    ]
+                ],
+                [
+                    'name'  => 'distance',
+                    'title' => 'Дистанция водителя',
+                    //'enableError' => true,
+                    'options' => [
+                    'class' => 'input-priority'
+                    ]
+                ]
+            ]
+        ])
+        ->label(false);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

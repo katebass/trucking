@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Model;
 use app\models\Orders;
 use app\models\Drivers;
 use app\models\DriversOrders;
@@ -68,17 +69,37 @@ class OrdersController extends Controller
     public function actionCreate()
     {
         $model = new Orders();
+        $driver = new DriversOrders();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
+            
+            $driversData = Yii::$app->request->post('DriversOrders', []);
+            
+            foreach ($driversData['drivers'] as $driverPostData) {
+                $driver = new DriversOrders();
+                $driver->driver_id = $driverPostData['driver_id'];
+                $driver->distance = $driverPostData['distance'];
+                $driver->order_id = $model['id'];
+                $driver->save();
+
+                $driverDescription = Drivers::findOne($driver->driver_id);
+
+                $salary = new Salaries();
+                $salary->drivers_orders_id = $driver->id;
+
+                $rateFactor = 1 + $driverDescription->experience / 10;
+                $salary->salary =  $rateFactor * $driverDescription->rate * $driver->distance;
+                
+                $salary->save();
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $driversInOrder = new DriversOrders();
-        $drivers[] = $driversInOrder;
-
         return $this->render('create', [
             'model' => $model,
-            'driversInOrder' => $drivers
+            'driversInOrder' => $driver
         ]);
     }
 
@@ -95,26 +116,37 @@ class OrdersController extends Controller
         $driversInOrder = DriversOrders::find()->where(['order_id' => $model->id])->all();
         
         $postData = Yii::$app->request->post();
-        if ($postData) {
+
+        if ($model->load(Yii::$app->request->post())) {
             
             $model->load($postData);
-
-            foreach($driversInOrder as $driver) {
-                $driver->load($postData);
+            $driversPostData = Yii::$app->request->post('DriversOrders', []);
+            
+            foreach ($driversData['drivers'] as $driverPostData) {
+                /*
+                $driver->load($postData->);
                 $driver->order_id = $model->id;
                 $driver->save();
+                */
+                $driver = DriversOrders::findOne($driverPostData['id']);
+                $driver->load($driverPostData);
+                echo "<pre>";
+                print_r($driver);
+                die;
+                $driver->driver_id = $driverPostData['driver_id'];
+                $driver->distance = $driverPostData['distance'];
+                $driver->order_id = $model['id'];
+                $driver->save();
 
-                $driverData = Drivers::findOne($driver->driver_id);
+                $driverDescription = Drivers::findOne($driverPostData->driver_id);
                 
                 $salary = Salaries::find()->where(['drivers_orders_id' => $driver->id])->one();
                 $salary = isset($salary) ? $salary : new Salaries();
                 $salary->drivers_orders_id = $driver->id;
 
-                $rateFactor = 1 + $driverData->experience / 10;
-                $salary->salary =  $rateFactor * $driverData->rate * $driver->distance;
-
-                $salary->save();
-                
+                $rateFactor = 1 + $driverDescription->experience / 10;
+                $salary->salary =  $rateFactor * $driverDescription->rate * $driver->distance;
+                $salary->save(); 
             }
 
             if($model->save()){
@@ -142,6 +174,17 @@ class OrdersController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionReport()
+    {
+        $searchModel = new OrdersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('report', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Finds the Orders model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -157,4 +200,5 @@ class OrdersController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

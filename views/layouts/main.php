@@ -39,6 +39,13 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             [
+                'label' => 'Расчетно-платежная ведомость',
+                'visible'=> !Yii::$app->user->isGuest,
+                'url' => ['/orders/report'],
+                'active' => Yii::$app->controller->action->id == 'report',
+
+            ],
+            [
                 'label' => 'Водители',
                 'visible'=> !Yii::$app->user->isGuest,
                 'url' => ['/drivers/index'],
@@ -64,13 +71,6 @@ AppAsset::register($this);
                 'visible'=> !Yii::$app->user->isGuest,
                 'url' => ['/salaries/index'],
                 'active' => Yii::$app->controller->id == 'salaries',
-
-            ],
-            [
-                'label' => 'Дистанции водителей',
-                'visible'=> !Yii::$app->user->isGuest,
-                'url' => ['/drivers-orders/index'],
-                'active' => Yii::$app->controller->id == 'drivers-orders',
 
             ],
             Yii::$app->user->isGuest ? (
